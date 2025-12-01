@@ -1,27 +1,241 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.home-content {
+  --background: #f8f9fa;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.main-content {
+  padding: 16px;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
+// Welcome Section
+.welcome-section {
+  margin-bottom: 24px;
 
-  color: #8c8c8c;
+  .greeting {
+    margin: 0 0 4px 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+  }
 
-  margin: 0;
+  .date {
+    margin: 0;
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+  }
+
+  .sleep-summary {
+    margin-top: 16px;
+
+    ion-card {
+      margin: 0;
+      border-radius: 12px;
+
+      ion-card-content {
+        padding: 12px;
+
+        p {
+          margin: 4px 0;
+          color: var(--ion-color-dark);
+        }
+      }
+    }
+  }
 }
 
-#container a {
-  text-decoration: none;
+// Action Cards
+.action-cards {
+  margin-bottom: 24px;
+}
+
+.action-card {
+  border-radius: 16px;
+  margin-bottom: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  ion-card-header {
+    padding-bottom: 8px;
+
+    .card-header-icon {
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: center;
+
+      ion-icon {
+        background: rgba(var(--ion-color-primary-rgb), 0.1);
+        padding: 12px;
+        border-radius: 50%;
+      }
+    }
+
+    ion-card-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--ion-color-dark);
+    }
+
+    ion-card-subtitle {
+      font-size: 0.9rem;
+      color: var(--ion-color-medium);
+      text-transform: none;
+    }
+  }
+
+  ion-card-content {
+    padding-top: 0;
+
+    p {
+      margin: 0 0 16px 0;
+      color: var(--ion-color-medium);
+      line-height: 1.5;
+    }
+  }
+}
+
+.sleep-card {
+  ion-card-header .card-header-icon ion-icon {
+    background: rgba(var(--ion-color-primary-rgb), 0.1);
+    color: var(--ion-color-primary);
+  }
+}
+
+.sleepiness-card {
+  ion-card-header .card-header-icon ion-icon {
+    background: rgba(var(--ion-color-warning-rgb), 0.1);
+    color: var(--ion-color-warning);
+  }
+
+  .sleepiness-scale-preview {
+    .scale-items {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+
+      .scale-item {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: var(--ion-color-light);
+        color: var(--ion-color-medium);
+        font-weight: 600;
+        font-size: 0.9rem;
+
+        &.active {
+          background: var(--ion-color-warning);
+          color: white;
+        }
+      }
+    }
+
+    small {
+      color: var(--ion-color-medium);
+      display: block;
+      text-align: center;
+    }
+  }
+}
+
+.quick-actions {
+  display: flex;
+  gap: 8px;
+
+  ion-button {
+    --border-radius: 20px;
+    font-size: 0.8rem;
+  }
+}
+
+// Quick Stats
+.quick-stats {
+  margin-bottom: 24px;
+
+  h3 {
+    margin: 0 0 12px 16px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+  }
+
+  ion-card {
+    border-radius: 16px;
+
+    .stat {
+      text-align: center;
+
+      .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--ion-color-primary);
+        margin-bottom: 4px;
+      }
+
+      .stat-label {
+        font-size: 0.8rem;
+        color: var(--ion-color-medium);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+}
+
+// Bottom Actions
+.bottom-actions {
+  padding: 0 16px 32px 16px;
+
+  ion-button {
+    --border-radius: 12px;
+    --border-width: 2px;
+    font-weight: 600;
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .home-content {
+    --background: #121212;
+  }
+
+  .welcome-section {
+    .greeting {
+      color: var(--ion-color-light);
+    }
+
+    .date {
+      color: var(--ion-color-medium);
+    }
+  }
+
+  .action-card {
+    --background: #1e1e1e;
+
+    ion-card-title {
+      color: var(--ion-color-light);
+    }
+
+    p {
+      color: var(--ion-color-medium);
+    }
+  }
+
+  .sleepiness-card .sleepiness-scale-preview {
+    .scale-item {
+      background: #2a2a2a;
+
+      &.active {
+        background: var(--ion-color-warning);
+      }
+    }
+  }
+
+  .quick-stats h3 {
+    color: var(--ion-color-light);
+  }
 }
