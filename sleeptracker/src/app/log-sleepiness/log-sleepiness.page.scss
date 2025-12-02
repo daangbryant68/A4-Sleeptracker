@@ -1,0 +1,169 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: var(--ion-color-primary);
+}
+
+.description {
+  text-align: center;
+  color: var(--ion-color-medium);
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+ion-card {
+  margin-bottom: 1.5rem;
+
+  ion-card-header {
+    padding-bottom: 8px;
+  }
+}
+
+// Make scale items fully clickable
+.scale-item {
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --min-height: 70px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--ion-color-light-shade);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.clickable {
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--ion-color-light);
+    }
+  }
+
+  // Style for selected items using the radio button state
+  &.item-radio-checked {
+    background-color: rgba(var(--ion-color-primary-rgb), 0.1);
+    border-color: var(--ion-color-primary);
+
+    .scale-number {
+      color: var(--ion-color-primary);
+      font-weight: bold;
+    }
+  }
+}
+
+.scale-label {
+  margin: 0;
+  width: 100%;
+}
+
+.scale-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.scale-number {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--ion-color-medium);
+  min-width: 40px;
+  text-align: center;
+  margin-right: 16px;
+  transition: color 0.2s ease;
+}
+
+.scale-description {
+  flex: 1;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+// Selected display
+.selected-display {
+  margin: 1.5rem 0;
+
+  h3 {
+    color: var(--ion-color-primary);
+    margin-top: 0;
+  }
+
+  p {
+    color: var(--ion-color-dark);
+    margin-bottom: 0;
+    font-style: italic;
+  }
+}
+
+.time-selection {
+  .custom-time {
+    margin-top: 1rem;
+
+    ion-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--ion-color-dark);
+    }
+  }
+}
+
+.datetime-full {
+  width: 100%;
+  --background: var(--ion-color-light);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.action-buttons {
+  margin: 2rem 0;
+
+  ion-button {
+    margin-bottom: 1rem;
+    height: 50px;
+  }
+}
+
+.scale-reference {
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 2rem;
+
+  h4 {
+    color: var(--ion-color-primary);
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 0;
+  }
+}
+
+// Radio button styling
+ion-radio {
+  --size: 24px;
+  --border-radius: 50%;
+  --border-width: 2px;
+  --color: var(--ion-color-medium);
+  --color-checked: var(--ion-color-primary);
+}
+
+ion-list-header {
+  --background: var(--ion-color-light);
+  font-weight: 600;
+}
+
+// Hide the radio button circle but keep it functional
+.scale-item.clickable ion-radio::part(container) {
+  display: none;
+}

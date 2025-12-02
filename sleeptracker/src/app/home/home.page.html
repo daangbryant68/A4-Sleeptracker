@@ -1,120 +1,89 @@
-<ion-content [fullscreen]="true" class="home-content">
-    <!-- Header -->
-    <ion-header class="ion-no-border">
-        <ion-toolbar color="primary">
-            <ion-title>Sleep Tracker</ion-title>
-        </ion-toolbar>
-    </ion-header>
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>SleepTracker</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-container">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Loading your sleep data...</p>
+    </div>
 
     <!-- Main Content -->
-    <div class="main-content">
+    <div *ngIf="!isLoading">
         <!-- Welcome Section -->
-        <section class="welcome-section">
-            <div class="date-display">
-                <h2 class="greeting">{{ greeting }}!</h2>
-                <p class="date">{{ getDayOfWeek() }} • {{ getFormattedDate() }}</p>
+        <div class="welcome-section">
+            <h1>Welcome to SleepTracker</h1>
+            <p>Track your sleep patterns and quality</p>
+
+            <div class="stats-card">
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="6">
+                            <div class="stat-item">
+                                <h3>{{ totalSleepLogs }}</h3>
+                                <p>Total Logs</p>
+                            </div>
+                        </ion-col>
+                        <ion-col size="6">
+                            <div class="stat-item">
+                                <h3>{{ formatDuration(averageSleepHours) }}</h3>
+                                <p>Avg. Sleep</p>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
             </div>
+        </div>
 
-            <div class="sleep-summary" *ngIf="false"> <!-- Hide if no data yet -->
-                <ion-card color="light">
-                    <ion-card-content>
-                        <p>Last night you slept <strong>7h 30m</strong></p>
-                        <p>Sleep quality: <strong>8/10</strong></p>
-                    </ion-card-content>
-                </ion-card>
-            </div>
-        </section>
-
-        <!-- Main Action Cards -->
-        <section class="action-cards">
-            <!-- Log Overnight Sleep Card -->
-            <ion-card class="action-card sleep-card" button routerLink="/tabs/track" routerDirection="forward">
-                <ion-card-header>
-                    <div class="card-header-icon">
-                        <ion-icon name="bed" color="primary" size="large"></ion-icon>
-                    </div>
-                    <ion-card-title>How did you sleep?</ion-card-title>
-                    <ion-card-subtitle>Log your overnight sleep</ion-card-subtitle>
-                </ion-card-header>
-
-                <ion-card-content>
-                    <p>Record your bedtime, wake-up time, and rate your sleep quality.</p>
-
-                    <div class="quick-actions">
-                        <ion-button fill="outline" size="small" color="medium" (click)="$event.stopPropagation()">
-                            <ion-icon name="time" slot="start"></ion-icon>
-                            Quick Log
-                        </ion-button>
-                    </div>
-                </ion-card-content>
-            </ion-card>
-
-            <!-- Log Sleepiness Card -->
-            <ion-card class="action-card sleepiness-card" button routerLink="/tabs/track" [queryParams]="{section: 'sleepiness'}" routerDirection="forward">
-                <ion-card-header>
-                    <div class="card-header-icon">
-                        <ion-icon name="moon" color="warning" size="large"></ion-icon>
-                    </div>
-                    <ion-card-title>Feeling sleepy?</ion-card-title>
-                    <ion-card-subtitle>Log your current sleepiness</ion-card-subtitle>
-                </ion-card-header>
-
-                <ion-card-content>
-                    <p>Rate how sleepy you feel right now using the Stanford Sleepiness Scale.</p>
-
-                    <div class="sleepiness-scale-preview">
-                        <div class="scale-items">
-                            <span class="scale-item" [class.active]="false">1</span>
-                            <span class="scale-item" [class.active]="false">2</span>
-                            <span class="scale-item" [class.active]="false">3</span>
-                            <span class="scale-item" [class.active]="false">4</span>
-                            <span class="scale-item" [class.active]="false">5</span>
-                            <span class="scale-item" [class.active]="false">6</span>
-                            <span class="scale-item" [class.active]="false">7</span>
-                        </div>
-                        <small>1 = Wide awake, 7 = Very sleepy</small>
-                    </div>
-                </ion-card-content>
-            </ion-card>
-        </section>
-
-        <!-- Quick Stats Section -->
-        <section class="quick-stats" *ngIf="false"> <!-- Hide if no data -->
-            <h3>Your Sleep This Week</h3>
-            <ion-card>
-                <ion-card-content>
-                    <ion-grid>
-                        <ion-row>
-                            <ion-col>
-                                <div class="stat">
-                                    <div class="stat-value">7.5h</div>
-                                    <div class="stat-label">Avg. Sleep</div>
-                                </div>
-                            </ion-col>
-                            <ion-col>
-                                <div class="stat">
-                                    <div class="stat-value">8.2</div>
-                                    <div class="stat-label">Avg. Quality</div>
-                                </div>
-                            </ion-col>
-                            <ion-col>
-                                <div class="stat">
-                                    <div class="stat-value">85%</div>
-                                    <div class="stat-label">Consistency</div>
-                                </div>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
-                </ion-card-content>
-            </ion-card>
-        </section>
-
-        <!-- Bottom Actions -->
-        <section class="bottom-actions">
-            <ion-button expand="block" fill="outline" routerLink="/tabs/history">
-                <ion-icon name="stats-chart" slot="start"></ion-icon>
-                View Sleep History
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <ion-button expand="block" color="primary" routerLink="/log-sleep">
+                <ion-icon slot="start" name="moon"></ion-icon>
+                Log Overnight Sleep
             </ion-button>
-        </section>
+
+            <ion-button expand="block" color="secondary" routerLink="/log-sleepiness">
+                <ion-icon slot="start" name="speedometer"></ion-icon>
+                Log Sleepiness
+            </ion-button>
+
+            <ion-button expand="block" color="tertiary" routerLink="/view-all-logs">
+                <ion-icon slot="start" name="list"></ion-icon>
+                View All Logs
+            </ion-button>
+        </div>
+
+        <!-- Recent Sleep Logs -->
+        <ion-card *ngIf="recentSleeps.length > 0">
+            <ion-card-header>
+                <ion-card-title>Recent Sleep</ion-card-title>
+                <ion-card-subtitle>
+                    Showing 3 most recent of {{ totalSleepLogs }} total logs
+                </ion-card-subtitle>
+            </ion-card-header>
+
+            <ion-card-content>
+                <ion-list>
+                    <ion-item *ngFor="let sleep of recentSleeps">
+                        <ion-icon slot="start" name="moon" color="primary"></ion-icon>
+                        <ion-label>
+                            <h2>{{ sleep.dateString() }}</h2>
+                            <p>{{ sleep.getStartTimeString() }} - {{ sleep.getEndTimeString() }}</p>
+                            <p><strong>{{ sleep.summaryString() }}</strong></p>
+                        </ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+
+        <!-- Empty State -->
+        <div *ngIf="recentSleeps.length === 0" class="empty-state">
+            <ion-icon name="bed-outline"></ion-icon>
+            <h3>No Sleep Logs Yet</h3>
+            <p>Start by logging your overnight sleep!</p>
+        </div>
     </div>
 </ion-content>

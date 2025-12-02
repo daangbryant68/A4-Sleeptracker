@@ -1,0 +1,88 @@
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: var(--ion-color-primary);
+}
+
+.description {
+  text-align: center;
+  color: var(--ion-color-medium);
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+ion-card {
+  margin-bottom: 1.5rem;
+
+  ion-card-header {
+    padding-bottom: 8px;
+  }
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  ion-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--ion-color-dark);
+  }
+}
+
+.datetime-full {
+  width: 100%;
+  --background: var(--ion-color-light);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.form-hint {
+  margin-top: 0.5rem;
+  color: var(--ion-color-medium);
+  font-size: 0.8rem;
+
+  small {
+    display: block;
+    text-align: center;
+  }
+}
+
+.action-buttons {
+  margin-top: 2rem;
+
+  ion-button {
+    margin-bottom: 1rem;
+    height: 50px;
+  }
+}
+
+ion-grid {
+  ion-row {
+    margin-bottom: 0.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    ion-col {
+      padding: 4px;
+
+      ion-button {
+        --border-radius: 8px;
+        white-space: normal;
+        height: auto;
+        min-height: 44px;
+      }
+    }
+  }
+}

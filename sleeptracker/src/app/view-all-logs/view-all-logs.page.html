@@ -1,0 +1,85 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/home"></ion-back-button>
+        </ion-buttons>
+        <ion-title>All Logs</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <div style="max-width: 600px; margin: 0 auto;">
+
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loading-container">
+            <ion-spinner name="crescent"></ion-spinner>
+            <p>Loading logs...</p>
+        </div>
+
+        <!-- Content when loaded -->
+        <div *ngIf="!isLoading">
+            <!-- Simple filter -->
+            <ion-card>
+                <ion-card-content>
+                    <ion-segment [(ngModel)]="filter" (ionChange)="onFilterChange($event)">
+                        <ion-segment-button value="all">
+                            <ion-label>All</ion-label>
+                        </ion-segment-button>
+                        <ion-segment-button value="sleep">
+                            <ion-label>Sleep</ion-label>
+                        </ion-segment-button>
+                        <ion-segment-button value="sleepiness">
+                            <ion-label>Sleepiness</ion-label>
+                        </ion-segment-button>
+                    </ion-segment>
+
+                    <div style="text-align: center; margin-top: 10px;">
+                        <p style="color: var(--ion-color-medium); margin: 0;">
+                            Showing {{ getLogsToShow().length }} logs
+                        </p>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+
+            <!-- Logs list -->
+            <ion-list>
+                <ion-item *ngFor="let log of getLogsToShow()">
+                    <ion-icon [name]="log.icon" slot="start" [color]="log.color"></ion-icon>
+                    <ion-label>
+                        <h2>{{ log.date }}</h2>
+                        <p><strong>{{ log.summary }}</strong></p>
+
+                        <!-- Additional details for sleep logs -->
+                        <div *ngIf="log.type === 'sleep'">
+                            <p style="font-size: 0.85rem; margin-top: 4px;">
+                                {{ log.startTime }} - {{ log.endTime }}
+                            </p>
+                        </div>
+
+                        <!-- Additional details for sleepiness logs -->
+                        <div *ngIf="log.type === 'sleepiness'">
+                            <p style="font-size: 0.85rem; margin-top: 4px; color: var(--ion-color-medium);">
+                                {{ log.description }}
+                            </p>
+                        </div>
+                    </ion-label>
+                </ion-item>
+            </ion-list>
+
+            <!-- Empty state -->
+            <div *ngIf="getLogsToShow().length === 0" style="text-align: center; padding: 40px 20px;">
+                <ion-icon name="list-outline" style="font-size: 3rem; color: var(--ion-color-medium); margin-bottom: 1rem;"></ion-icon>
+                <h3>No Logs Found</h3>
+                <p style="color: var(--ion-color-medium); margin-bottom: 1.5rem;">
+                    <span *ngIf="filter === 'all'">No sleep or sleepiness logs recorded yet.</span>
+                    <span *ngIf="filter === 'sleep'">No sleep logs recorded yet.</span>
+                    <span *ngIf="filter === 'sleepiness'">No sleepiness logs recorded yet.</span>
+                </p>
+                <ion-button routerLink="/home" expand="block" fill="outline">
+                    <ion-icon slot="start" name="arrow-back"></ion-icon>
+                    Back to Home
+                </ion-button>
+            </div>
+        </div>
+    </div>
+</ion-content>

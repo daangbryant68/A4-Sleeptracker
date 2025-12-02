@@ -1,86 +1,124 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import {
-	IonContent,
 	IonHeader,
-	IonTitle,
 	IonToolbar,
+	IonTitle,
+	IonContent,
 	IonCard,
 	IonCardHeader,
 	IonCardTitle,
 	IonCardContent,
+	IonList,
+	IonItem,
+	IonLabel,
 	IonButton,
 	IonIcon,
-	IonText,
+	IonGrid,
 	IonRow,
 	IonCol,
-	IonGrid, IonCardSubtitle
+	IonCardSubtitle,
+	IonSpinner
 } from '@ionic/angular/standalone';
-import { RouterModule } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { bed, moon, statsChart, happy, sad, time } from 'ionicons/icons';
+import { moon, bedOutline, speedometer, list } from 'ionicons/icons';
+import { SleepService } from '../services/sleep.service';
+import { OvernightSleepData } from '../data/overnight-sleep-data';
 
 @Component({
 	selector: 'app-home',
-	templateUrl: './home.page.html',
-	styleUrls: ['./home.page.scss'],
+	templateUrl: 'home.page.html',
+	styleUrls: ['home.page.scss'],
 	standalone: true,
 	imports: [
 		CommonModule,
 		FormsModule,
 		RouterModule,
-		IonContent,
 		IonHeader,
-		IonTitle,
 		IonToolbar,
+		IonTitle,
+		IonContent,
 		IonCard,
 		IonCardHeader,
 		IonCardTitle,
 		IonCardContent,
+		IonList,
+		IonItem,
+		IonLabel,
 		IonButton,
 		IonIcon,
-		IonText,
+		IonGrid,
 		IonRow,
 		IonCol,
-		IonGrid,
-		IonCardSubtitle
+		IonCardSubtitle,
+		IonSpinner
 	]
 })
 export class HomePage implements OnInit {
-	today = new Date();
-	greeting = '';// You could make this customizable
+	recentSleeps: OvernightSleepData[] = [];
+	totalSleepLogs = 0;
+	hasLoggedToday = false;
+	averageSleepHours = 0;
+	isLoading = true;
 
-	constructor() {
-		addIcons({ bed, moon, statsChart, happy, sad, time });
+	constructor(
+		private sleepService: SleepService
+	) {
+		addIcons({ moon, bedOutline, speedometer, list });
 	}
 
-	ngOnInit() {
-		this.setGreeting();
+	async ngOnInit() {
+		console.log('Home page loading...');
+		await this.loadData();
 	}
 
-	setGreeting() {
-		const hour = this.today.getHours();
-		if (hour < 12) {
-			this.greeting = 'Good Morning';
-		} else if (hour < 18) {
-			this.greeting = 'Good Afternoon';
-		} else {
-			this.greeting = 'Good Evening';
+	async ionViewWillEnter() {
+		console.log('Home page entering, refreshing data...');
+		await this.loadData();
+	}
+
+	async loadData() {
+		this.isLoading = true;
+
+		try {
+			console.log('Loading sleep data...');
+			const allSleeps = await this.sleepService.getAllOvernightSleepData();
+			console.log('Loaded', allSleeps.length, 'sleep logs');
+
+			this.recentSleeps = allSleeps.slice(0, 3);
+			this.totalSleepLogs = allSleeps.length;
+
+			if (allSleeps.length > 0) {
+				console.log('Sample sleep log:', {
+					date: allSleeps[0].dateString(),
+					start: allSleeps[0].getStartTimeString(),
+					end: allSleeps[0].getEndTimeString(),
+					summary: allSleeps[0].summaryString()
+				});
+			}
+
+			this.hasLoggedToday = await this.sleepService.hasLoggedToday();
+			this.averageSleepHours = await this.sleepService.getAverageSleepDuration();
+
+			console.log('Home page data loaded:', {
+				totalLogs: this.totalSleepLogs,
+				recentSleeps: this.recentSleeps.length,
+				hasLoggedToday: this.hasLoggedToday,
+				avgSleep: this.averageSleepHours
+			});
+
+		} catch (error) {
+			console.error('Error loading home page data:', error);
+		} finally {
+			this.isLoading = false;
 		}
 	}
 
-	getDayOfWeek(): string {
-		const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-		return days[this.today.getDay()];
-	}
-
-	getFormattedDate(): string {
-		const options: Intl.DateTimeFormatOptions = {
-			month: 'long',
-			day: 'numeric',
-			year: 'numeric'
-		};
-		return this.today.toLocaleDateString('en-US', options);
+	formatDuration(hours: number): string {
+		const wholeHours = Math.floor(hours);
+		const minutes = Math.round((hours - wholeHours) * 60);
+		return `${wholeHours}h ${minutes}m`;
 	}
 }

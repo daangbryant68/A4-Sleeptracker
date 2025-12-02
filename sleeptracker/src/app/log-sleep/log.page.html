@@ -1,0 +1,126 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/home"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Log Overnight Sleep</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <div class="container">
+        <h2>When did you sleep last night?</h2>
+
+        <form [formGroup]="sleepForm">
+            <!-- Bedtime Input -->
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title>Bedtime</ion-card-title>
+                    <ion-card-subtitle>When you went to sleep</ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                    <div class="form-group">
+                        <ion-label>Date</ion-label>
+                        <ion-datetime
+                                formControlName="sleepStartDate"
+                                presentation="date"
+                                class="datetime-full">
+                        </ion-datetime>
+                    </div>
+
+                    <div class="form-group">
+                        <ion-label>Time</ion-label>
+                        <ion-datetime
+                                formControlName="sleepStartTime"
+                                presentation="time"
+                                class="datetime-full">
+                        </ion-datetime>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+
+            <!-- Wake-up Time Input -->
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title>Wake-up Time</ion-card-title>
+                    <ion-card-subtitle>When you woke up</ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                    <div class="form-group">
+                        <ion-label>Date</ion-label>
+                        <ion-datetime
+                                formControlName="sleepEndDate"
+                                presentation="date"
+                                class="datetime-full">
+                        </ion-datetime>
+                    </div>
+
+                    <div class="form-group">
+                        <ion-label>Time</ion-label>
+                        <ion-datetime
+                                formControlName="sleepEndTime"
+                                presentation="time"
+                                class="datetime-full">
+                        </ion-datetime>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+        </form>
+
+        <!-- Quick Set Buttons -->
+        <ion-card>
+            <ion-card-header>
+                <ion-card-subtitle>Quick Set</ion-card-subtitle>
+                <ion-card-title>Common Sleep Times</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-button expand="block" fill="outline" (click)="setYesterdayToToday()">
+                                Last Night (11 PM - 7 AM)
+                            </ion-button>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="4">
+                            <ion-button expand="block" fill="outline" (click)="setQuickSleep(7)">
+                                7 Hours Ago
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-button expand="block" fill="outline" (click)="setQuickSleep(8)">
+                                8 Hours Ago
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-button expand="block" fill="outline" (click)="setQuickSleep(9)">
+                                9 Hours Ago
+                            </ion-button>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+        </ion-card>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <ion-button
+                    expand="block"
+                    color="light"
+                    (click)="cancel()"
+                    [disabled]="isSubmitting">
+                Cancel
+            </ion-button>
+
+            <ion-button
+                    expand="block"
+                    color="primary"
+                    (click)="logSleep()"
+                    [disabled]="isSubmitting || sleepForm.invalid">
+                <ion-spinner *ngIf="isSubmitting" name="crescent"></ion-spinner>
+                <span *ngIf="!isSubmitting">Log Sleep</span>
+            </ion-button>
+        </div>
+    </div>
+</ion-content>

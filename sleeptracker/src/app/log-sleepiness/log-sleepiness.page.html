@@ -1,0 +1,114 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/home"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Log Sleepiness</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <div class="container">
+        <h2>How Sleepy Do You Feel?</h2>
+        <p class="description">Select your current sleepiness level using the Stanford Sleepiness Scale</p>
+
+        <!-- Sleepiness Scale Selection -->
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>Stanford Sleepiness Scale</ion-card-title>
+                <ion-card-subtitle>Select one option that best describes how you feel</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-list>
+                    <ion-radio-group [(ngModel)]="selectedValue">
+                        <ion-list-header>
+                            <ion-label>Sleepiness Levels</ion-label>
+                        </ion-list-header>
+
+                        <!-- Make each item clickable -->
+                        <ion-item *ngFor="let level of sleepinessScale"
+                                  class="scale-item clickable"
+                                  (click)="selectedValue = level.value">
+                            <ion-radio slot="start"
+                                       [value]="level.value"
+                                       justify="start">
+                            </ion-radio>
+                            <ion-label class="scale-label">
+                                <div class="scale-content">
+                                    <div class="scale-number">{{level.value}}</div>
+                                    <div class="scale-description">{{level.description}}</div>
+                                </div>
+                            </ion-label>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+            </ion-card-content>
+        </ion-card>
+
+        <!-- Time Selection -->
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>Time</ion-card-title>
+                <ion-card-subtitle>When did you feel this way?</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+                <div class="time-selection">
+                    <ion-button
+                            expand="block"
+                            fill="outline"
+                            color="medium"
+                            (click)="toggleCustomTime()">
+                        {{ useCustomTime ? 'Use Current Time' : 'Set Custom Time' }}
+                    </ion-button>
+
+                    <div *ngIf="useCustomTime" class="custom-time">
+                        <ion-label>Select Date & Time:</ion-label>
+                        <ion-datetime
+                                [(ngModel)]="customTime"
+                                presentation="date-time"
+                                class="datetime-full">
+                        </ion-datetime>
+                    </div>
+                </div>
+            </ion-card-content>
+        </ion-card>
+
+        <!-- Selected Value Display -->
+        <div *ngIf="selectedValue !== null" class="selected-display">
+            <ion-card color="light">
+                <ion-card-content>
+                    <h3>Selected: Level {{selectedValue}}</h3>
+                    <p>{{sleepinessScale[selectedValue - 1].description}}</p>
+                </ion-card-content>
+            </ion-card>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <ion-button
+                    expand="block"
+                    color="light"
+                    (click)="cancel()"
+                    [disabled]="isSubmitting">
+                Cancel
+            </ion-button>
+
+            <ion-button
+                    expand="block"
+                    color="primary"
+                    (click)="logSleepiness()"
+                    [disabled]="isSubmitting || selectedValue === null">
+                <ion-spinner *ngIf="isSubmitting" name="crescent"></ion-spinner>
+                <ion-icon *ngIf="!isSubmitting" slot="start" name="speedometer"></ion-icon>
+                <span *ngIf="!isSubmitting">Log Sleepiness</span>
+            </ion-button>
+        </div>
+
+        <!-- Scale Reference -->
+        <div class="scale-reference">
+            <h4>About the Stanford Sleepiness Scale</h4>
+            <p>The Stanford Sleepiness Scale (SSS) is a scale that is used to measure subjective sleepiness.
+                It ranges from 1 (feeling active and alert) to 7 (almost asleep).</p>
+        </div>
+    </div>
+</ion-content>
